@@ -1,0 +1,26 @@
+const { Builder, By, Key, until } = require('selenium-webdriver');
+
+async function loginTest() {
+  let driver = await new Builder().forBrowser('chrome').build();
+  try {
+    await driver.get('https://lms.sambaash.com/');
+
+    // Find the email and password input fields and enter valid credentials
+    await driver.findElement(By.id('email')).sendKeys('citra.ayu@sambaash.com');
+    await driver.findElement(By.id('password')).sendKeys('ZAQ12wsxcv!', Key.RETURN);
+
+    // Wait for the page to load after logging in
+    await driver.wait(until.titleIs('OmniLearn'), 5000);
+
+    // Verify that the user is logged in by checking for the presence of a logout button
+    await driver.findElement(By.id('logout')).isDisplayed();
+    console.log('Login test passed!');
+  } catch (error) {
+    console.error('Login test failed:', error);
+  } finally {
+    // Quit the browser after the test is complete
+    await driver.quit();
+  }
+}
+
+loginTest();
